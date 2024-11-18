@@ -1,39 +1,24 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
 using PasswordManagement.Models;
 using PasswordManagement.Services;
 namespace PasswordManagement.ViewModels;
 
-public class AddNewPasswordViewModel : BaseViewModel
+[ObservableObject]
+public partial class AddNewPasswordViewModel
 {
-   private string _name;
-    public string Name
-    {
-        get => _name;
-        set => SetProperty(ref _name, value);
+    [ObservableProperty]
+    private string name;
 
-    }
+    [ObservableProperty]
+    private string username;
 
-    private string _username;
-    public string Username
-    {
-        get => _username;
-        set => SetProperty(ref _username, value);
-    }
+    [ObservableProperty]
+    private string password;
 
-    private string _password;
-    public string Password
-    {
-        get => _password;
-        set => SetProperty(ref _password, value);
-    }
-
-    private string _category;
-    public string Category
-    {
-        get => _category;
-        set => SetProperty(ref _category, value);
-    }
+    [ObservableProperty]
+    private string category;
 
     public ICommand AddPassword { get; set; }
     public ICommand Reset { get; set; }
@@ -46,18 +31,17 @@ public class AddNewPasswordViewModel : BaseViewModel
     private readonly DatabaseServices _databaseService;
     public AddNewPasswordViewModel(DatabaseServices databaseServices)
     {
-         _databaseService = databaseServices;
+        _databaseService = databaseServices;
         Passwords = [];
         AddPassword = new Command(async () => { await AddNewPassword(); });
         Reset = new Command(ResetFields);
-
-        FetchDataFromDatabase();
+        Task.Run(async () => { await FetchDataFromDatabase(); }).Wait();
     }
 
     private async Task FetchDataFromDatabase()
     {
         var fetchPassowrd = await _databaseService.GetStoredPasswordsAsync();
-        if(fetchPassowrd!=null && fetchPassowrd.Count>0)
+        if (fetchPassowrd != null && fetchPassowrd.Count > 0)
         {
             foreach (var item in fetchPassowrd)
             {

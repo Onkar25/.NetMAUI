@@ -1,52 +1,26 @@
 using System;
 using PasswordManagement.ViewModels;
 using SQLite;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace PasswordManagement.Models;
 
 [Table("stored_password")]
-public class StoredPassword : BaseViewModel
+[ObservableObject]
+public partial class StoredPassword
 {
-    private int _id;
-    [PrimaryKey]
-    [AutoIncrement]
-    [Column("id")]
-    public int Id
-    {
-        get => _id;
-        set => SetProperty(ref _id, value);
-    }
-     
-    private string _name;
-    [Column("name")]
-    public string Name
-    {
-        get => _name;
-        set => SetProperty(ref _name, value);
+    [ObservableProperty]
+    private int id;
 
-    }
+    [ObservableProperty]
+    private string name;
 
+    [ObservableProperty]
     private string _username;
-    [Column("username")]
-    public string Username
-    {
-        get => _username;
-        set => SetProperty(ref _username, value);
-    }
+    [ObservableProperty]
+    private string password;
 
-    private string _password;
-     [Column("password")]
-    public string Password
-    {
-        get => _password;
-        set => SetProperty(ref _password, value);
-    }
+    [ObservableProperty]
+    private string category;
 
-    private string _category;
-     [Column("category")]
-    public string Category
-    {
-        get => _category;
-        set => SetProperty(ref _category, value);
-    }
 }
