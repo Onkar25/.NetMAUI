@@ -27,12 +27,31 @@ public class FirestoreService
             }.Build();
         }
     }
-    public async Task InsertSampleModel(StoredPassword sample)
+    public async Task<string> InsertPassword(StoredPassword sample)
     {
         await SetupFirestore();
-        await db.Collection("StoredPassword").AddAsync(sample);
+        var data = await db.Collection("StoredPassword").AddAsync(sample);
+        return data.Id;
     }
-    public async Task<List<StoredPassword>> GetSampleModels()
+
+    public async Task RemovePassword(StoredPassword sample)
+    {
+        await SetupFirestore();
+        var data = db.Collection("StoredPassword").Document(sample.Id);
+        await data.DeleteAsync();
+    }
+
+    public async Task UpdatePassword(StoredPassword sample)
+    {
+        await SetupFirestore();
+        var data = db.Collection("StoredPassword").Document(sample.Id);
+        await data.UpdateAsync("Name", sample.Name);
+        await data.UpdateAsync("Username", sample.Username);
+        await data.UpdateAsync("Password", sample.Password);
+        await data.UpdateAsync("Category", sample.Category);
+    }
+
+    public async Task<List<StoredPassword>> GetPasswords()
     {
         await SetupFirestore();
         var data = await db
@@ -42,7 +61,7 @@ public class FirestoreService
             .Select(doc =>
             {
                 var sampleModel = doc.ConvertTo<StoredPassword>();
-                // sampleModel.Id = doc.Id; // FirebaseId hinzufügen
+                sampleModel.Id = doc.Id; // FirebaseId hinzufügen
                 return sampleModel;
             })
             .ToList();

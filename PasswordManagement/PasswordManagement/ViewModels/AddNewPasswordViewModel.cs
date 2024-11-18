@@ -1,13 +1,18 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using PasswordManagement.Models;
 using PasswordManagement.Services;
 namespace PasswordManagement.ViewModels;
 
-[ObservableObject]
-public partial class AddNewPasswordViewModel
+
+public partial class AddNewPasswordViewModel : ObservableObject
 {
+
+    [ObservableProperty]
+    private string id;
+
     [ObservableProperty]
     private string name;
 
@@ -22,6 +27,8 @@ public partial class AddNewPasswordViewModel
 
     public ICommand AddPassword { get; set; }
     public ICommand Reset { get; set; }
+
+    // public ICommand RemovePassword { get; set; }
     private ObservableCollection<StoredPassword> _passwords;
     public ObservableCollection<StoredPassword> Passwords
     {
@@ -36,6 +43,7 @@ public partial class AddNewPasswordViewModel
         Passwords = [];
         AddPassword = new Command(async () => { await AddNewPassword(); });
         Reset = new Command(ResetFields);
+        // RemovePassword = new Command<StoredPassword> (RemovePasswordData);
         // Task.Run(async () => { await FetchDataFromDatabase(); }).Wait();
     }
 
@@ -45,12 +53,13 @@ public partial class AddNewPasswordViewModel
         Passwords = [];
         AddPassword = new Command(async () => { await AddNewPassword(); });
         Reset = new Command(ResetFields);
+        //    RemovePassword = new Command<StoredPassword> (RemovePasswordData);
         Task.Run(async () => { await FetchFirestoreData(); }).Wait();
     }
 
     private async Task FetchFirestoreData()
     {
-        var fetchPassowrd = await _firestoreService1.GetSampleModels();
+        var fetchPassowrd = await _firestoreService1.GetPasswords();
         if (fetchPassowrd != null && fetchPassowrd.Count > 0)
         {
             foreach (var item in fetchPassowrd)
@@ -78,15 +87,28 @@ public partial class AddNewPasswordViewModel
         {
             StoredPassword password = new StoredPassword { Name = Name, Username = Username, Category = Category, Password = Password };
             // await StoreDatabase(password);
-            await StoreFirestoreData(password);
+            var data =  await StoreFirestoreData(password);
+            password.Id = data;
             Passwords.Add(password);
             ResetFields();
         }
     }
 
-    private async Task StoreFirestoreData(StoredPassword password)
+    [RelayCommand]
+    public  void RemovePasswordData(StoredPassword password)
     {
-        await _firestoreService1.InsertSampleModel(password);
+
+    }
+
+     [RelayCommand]
+    public  void EditPasswordData(StoredPassword password)
+    {
+
+    }
+
+    private async Task<string> StoreFirestoreData(StoredPassword password)
+    {
+       return await _firestoreService1.InsertPassword(password);
     }
     private async Task StoreDatabase(StoredPassword password)
     {

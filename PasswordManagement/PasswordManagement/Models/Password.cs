@@ -8,7 +8,7 @@ namespace PasswordManagement.Models;
 public class StoredPassword
 {
     [FirestoreProperty]
-    public int Id { get; set; }
+    public string Id { get; set; }
 
     [FirestoreProperty]
     public string Name { get; set; }
