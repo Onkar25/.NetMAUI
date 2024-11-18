@@ -5,10 +5,10 @@ namespace PasswordManagement;
 
 public partial class App : Application
 {
-	public App(DatabaseServices databaseServices)
+	public App(FirestoreService firestoreService)
 	{
 		InitializeComponent();
 
-		MainPage = new AddNewPassword(databaseServices);
+		MainPage = new AddNewPassword(firestoreService);
 	}
 }

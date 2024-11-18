@@ -29,13 +29,35 @@ public partial class AddNewPasswordViewModel
         set => SetProperty(ref _passwords, value);
     }
     private readonly DatabaseServices _databaseService;
+    private readonly FirestoreService _firestoreService1;
     public AddNewPasswordViewModel(DatabaseServices databaseServices)
     {
         _databaseService = databaseServices;
         Passwords = [];
         AddPassword = new Command(async () => { await AddNewPassword(); });
         Reset = new Command(ResetFields);
-        Task.Run(async () => { await FetchDataFromDatabase(); }).Wait();
+        // Task.Run(async () => { await FetchDataFromDatabase(); }).Wait();
+    }
+
+    public AddNewPasswordViewModel(FirestoreService firestoreService)
+    {
+        _firestoreService1 = firestoreService;
+        Passwords = [];
+        AddPassword = new Command(async () => { await AddNewPassword(); });
+        Reset = new Command(ResetFields);
+        Task.Run(async () => { await FetchFirestoreData(); }).Wait();
+    }
+
+    private async Task FetchFirestoreData()
+    {
+        var fetchPassowrd = await _firestoreService1.GetSampleModels();
+        if (fetchPassowrd != null && fetchPassowrd.Count > 0)
+        {
+            foreach (var item in fetchPassowrd)
+            {
+                Passwords.Add(item);
+            }
+        }
     }
 
     private async Task FetchDataFromDatabase()
@@ -55,12 +77,17 @@ public partial class AddNewPasswordViewModel
         if (await ValidateEntry())
         {
             StoredPassword password = new StoredPassword { Name = Name, Username = Username, Category = Category, Password = Password };
-            await StoreDatabase(password);
+            // await StoreDatabase(password);
+            await StoreFirestoreData(password);
             Passwords.Add(password);
             ResetFields();
         }
     }
 
+    private async Task StoreFirestoreData(StoredPassword password)
+    {
+        await _firestoreService1.InsertSampleModel(password);
+    }
     private async Task StoreDatabase(StoredPassword password)
     {
         await _databaseService.InsertPasswordData(password);

@@ -1,26 +1,42 @@
-using System;
-using PasswordManagement.ViewModels;
+using Google.Cloud.Firestore;
 using SQLite;
-using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace PasswordManagement.Models;
 
-[Table("stored_password")]
-[ObservableObject]
-public partial class StoredPassword
+// [Table("stored_password")]
+[FirestoreData]
+public class StoredPassword
 {
-    [ObservableProperty]
-    private int id;
+    [FirestoreProperty]
+    public int Id { get; set; }
 
-    [ObservableProperty]
-    private string name;
+    [FirestoreProperty]
+    public string Name { get; set; }
 
-    [ObservableProperty]
-    private string _username;
-    [ObservableProperty]
-    private string password;
+    [FirestoreProperty]
+    public string Username { get; set; }
 
-    [ObservableProperty]
-    private string category;
+    [FirestoreProperty]
+    public string Password { get; set; }
 
+    [FirestoreProperty]
+    public string Category { get; set; }
+
+    [FirestoreProperty]
+    public DateTime CreatedAt { get; set; }
+
+}
+
+public class DateTimeToTimestampConverter : IFirestoreConverter<DateTime>
+{
+    public object ToFirestore(DateTime value) => Timestamp.FromDateTime(value.ToUniversalTime());
+
+    public DateTime FromFirestore(object value)
+    {
+        if (value is Timestamp timestamp)
+        {
+            return timestamp.ToDateTime();
+        }
+        throw new ArgumentException("Invalid value");
+    }
 }

@@ -20,6 +20,7 @@ public static class MauiProgram
 			});
 
 			builder.Services.AddSingleton<DatabaseServices>();
+				builder.Services.AddSingleton<FirestoreService>();
 			// builder.Services.AddTransient<AddNewPassword>();
 
 #if DEBUG
