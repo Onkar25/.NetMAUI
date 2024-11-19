@@ -1,8 +1,6 @@
 using Google.Cloud.Firestore;
 using PasswordManagement.Models;
-
 namespace PasswordManagement.Services;
-
 public class FirestoreService
 {
     private FirestoreDb db;

@@ -1,6 +1,10 @@
 ﻿using CommunityToolkit.Maui;
+using Firebase.Auth;
+using Firebase.Auth.Providers;
 using Microsoft.Extensions.Logging;
 using PasswordManagement.Services;
+using PasswordManagement.ViewModels;
+using PasswordManagement.Views;
 
 namespace PasswordManagement;
 
@@ -18,9 +22,20 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
 
-			builder.Services.AddSingleton<DatabaseServices>();
-				builder.Services.AddSingleton<FirestoreService>();
-			// builder.Services.AddTransient<AddNewPassword>();
+		// Services
+		builder.Services.AddSingleton(new FirebaseAuthClient(new FirebaseAuthConfig() { ApiKey = "AIzaSyCrciBVoWwcJqXkVmcJmdEBU7KuqGs7vAs", AuthDomain = "maui-password-mgmt.firebaseapp.com", Providers = [new EmailProvider()] }));
+		builder.Services.AddSingleton<DatabaseServices>();
+		builder.Services.AddSingleton<FirestoreService>();
+
+		//View Models
+		builder.Services.AddSingleton<AddNewPasswordViewModel>();
+		builder.Services.AddSingleton<LoginPageViewModel>();
+		builder.Services.AddSingleton<SignUpPageViewModel>();
+
+		// Pages
+		builder.Services.AddTransient<AddNewPassword>();
+		builder.Services.AddTransient<LoginPage>();
+		builder.Services.AddTransient<SignUpPage>();
 
 #if DEBUG
 		builder.Logging.AddDebug();

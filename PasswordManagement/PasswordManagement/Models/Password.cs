@@ -10,16 +10,16 @@ public class StoredPassword
     public int Id { get; set; }
     
     [FirestoreProperty]
-    public required string Name { get; set; }
+    public string Name { get; set; }
 
     [FirestoreProperty]
-    public required string Username { get; set; }
+    public string Username { get; set; }
 
     [FirestoreProperty]
-    public required string Password { get; set; }
+    public string Password { get; set; }
 
     [FirestoreProperty]
-    public required string Category { get; set; }
+    public string Category { get; set; }
 
     [FirestoreProperty]
     public DateTime CreatedAt { get; set; }

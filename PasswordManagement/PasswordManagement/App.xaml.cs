@@ -9,6 +9,6 @@ public partial class App : Application
 	{
 		InitializeComponent();
 
-		MainPage = new AddNewPassword(firestoreService);
+		MainPage = new NavigationPage(new LoginPage(firestoreService));
 	}
 }
