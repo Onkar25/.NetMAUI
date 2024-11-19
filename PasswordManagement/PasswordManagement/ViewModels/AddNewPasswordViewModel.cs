@@ -6,7 +6,6 @@ using PasswordManagement.Models;
 using PasswordManagement.Services;
 namespace PasswordManagement.ViewModels;
 
-
 public partial class AddNewPasswordViewModel : ObservableObject
 {
 
@@ -27,6 +26,9 @@ public partial class AddNewPasswordViewModel : ObservableObject
 
     public ICommand AddPassword { get; set; }
     public ICommand Reset { get; set; }
+
+    private bool isUpdate = false;
+    private int count => Password != null ? Passwords.Count : 0;
 
     // public ICommand RemovePassword { get; set; }
     private ObservableCollection<StoredPassword> _passwords;
@@ -86,29 +88,47 @@ public partial class AddNewPasswordViewModel : ObservableObject
         if (await ValidateEntry())
         {
             StoredPassword password = new StoredPassword { Name = Name, Username = Username, Category = Category, Password = Password };
-            // await StoreDatabase(password);
-            var data =  await StoreFirestoreData(password);
-            password.Id = data;
-            Passwords.Add(password);
+            if (isUpdate)
+            {
+                password.DocId = Id;
+                await _firestoreService1.UpdatePassword(password);
+                var found = Passwords.FirstOrDefault(x => x.DocId == Id);
+                Passwords[Passwords.IndexOf(found)] = password;
+                isUpdate = false;
+            }
+            else
+            {
+                // await StoreDatabase(password);
+                var data = await StoreFirestoreData(password);
+                password.DocId = data;
+                Passwords.Add(password);
+            }
+
             ResetFields();
         }
     }
 
     [RelayCommand]
-    public  void RemovePasswordData(StoredPassword password)
+    public async Task RemovePasswordData(StoredPassword password)
     {
-
+        await _firestoreService1.RemovePassword(password);
+        Passwords.Remove(password);
     }
 
-     [RelayCommand]
-    public  void EditPasswordData(StoredPassword password)
+    [RelayCommand]
+    public async Task EditPasswordData(StoredPassword password)
     {
-
+        isUpdate = true;
+        Name = password.Name;
+        Username = password.Username;
+        Category = password.Category;
+        Password = password.Password;
+        Id = password.DocId;
     }
 
     private async Task<string> StoreFirestoreData(StoredPassword password)
     {
-       return await _firestoreService1.InsertPassword(password);
+        return await _firestoreService1.InsertPassword(password);
     }
     private async Task StoreDatabase(StoredPassword password)
     {

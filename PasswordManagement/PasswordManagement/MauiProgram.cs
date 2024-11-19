@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using PasswordManagement.Services;
-using PasswordManagement.Views;
 
 namespace PasswordManagement;
 

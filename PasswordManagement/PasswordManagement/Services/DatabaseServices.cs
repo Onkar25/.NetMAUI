@@ -1,4 +1,3 @@
-using System;
 using PasswordManagement.Models;
 using SQLite;
 

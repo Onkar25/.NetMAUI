@@ -1,4 +1,3 @@
-using System;
 using Google.Cloud.Firestore;
 using PasswordManagement.Models;
 
@@ -37,14 +36,14 @@ public class FirestoreService
     public async Task RemovePassword(StoredPassword sample)
     {
         await SetupFirestore();
-        var data = db.Collection("StoredPassword").Document(sample.Id);
+        var data = db.Collection("StoredPassword").Document(sample.DocId);
         await data.DeleteAsync();
     }
 
     public async Task UpdatePassword(StoredPassword sample)
     {
         await SetupFirestore();
-        var data = db.Collection("StoredPassword").Document(sample.Id);
+        var data = db.Collection("StoredPassword").Document(sample.DocId);
         await data.UpdateAsync("Name", sample.Name);
         await data.UpdateAsync("Username", sample.Username);
         await data.UpdateAsync("Password", sample.Password);
@@ -57,14 +56,14 @@ public class FirestoreService
         var data = await db
                         .Collection("StoredPassword")
                         .GetSnapshotAsync();
-        var sampleModels = data.Documents
+        var passwordsData = data.Documents
             .Select(doc =>
             {
-                var sampleModel = doc.ConvertTo<StoredPassword>();
-                sampleModel.Id = doc.Id; // FirebaseId hinzufügen
-                return sampleModel;
+                var passwordData = doc.ConvertTo<StoredPassword>();
+                passwordData.DocId = doc.Id; // FirebaseId hinzufügen
+                return passwordData;
             })
             .ToList();
-        return sampleModels;
+        return passwordsData;
     }
 }
