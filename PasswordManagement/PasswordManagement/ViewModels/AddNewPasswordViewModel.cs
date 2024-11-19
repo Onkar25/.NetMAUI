@@ -39,15 +39,15 @@ public partial class AddNewPasswordViewModel : ObservableObject
     }
     private readonly DatabaseServices _databaseService;
     private readonly FirestoreService _firestoreService1;
-    public AddNewPasswordViewModel(DatabaseServices databaseServices)
-    {
-        _databaseService = databaseServices;
-        Passwords = [];
-        AddPassword = new Command(async () => { await AddNewPassword(); });
-        Reset = new Command(ResetFields);
-        // RemovePassword = new Command<StoredPassword> (RemovePasswordData);
-        // Task.Run(async () => { await FetchDataFromDatabase(); }).Wait();
-    }
+    // public AddNewPasswordViewModel(DatabaseServices databaseServices)
+    // {
+    //     _databaseService = databaseServices;
+    //     Passwords = [];
+    //     AddPassword = new Command(async () => { await AddNewPassword(); });
+    //     Reset = new Command(ResetFields);
+    //     // RemovePassword = new Command<StoredPassword> (RemovePasswordData);
+    //     // Task.Run(async () => { await FetchDataFromDatabase(); }).Wait();
+    // }
 
     public AddNewPasswordViewModel(FirestoreService firestoreService)
     {

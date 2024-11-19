@@ -10,11 +10,11 @@ public partial class AddNewPassword : ContentPage
 	{
 		InitializeComponent();
 	}
-	public AddNewPassword(DatabaseServices databaseServices)
-	{
-		InitializeComponent();
-		BindingContext = new AddNewPasswordViewModel(databaseServices);
-	}
+	// public AddNewPassword(DatabaseServices databaseServices)
+	// {
+	// 	InitializeComponent();
+	// 	BindingContext = new AddNewPasswordViewModel(databaseServices);
+	// }
 
 	public AddNewPassword(FirestoreService firestoreService)
 	{

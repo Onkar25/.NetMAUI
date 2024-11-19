@@ -12,11 +12,13 @@
                HorizontalOptions="Center"
                VerticalOptions="Center"/>
         <Entry Placeholder="Username"
+              Text="{Binding Emailid}"
                x:Name="usernameEntry"/>
         <Entry Placeholder="Password"
+                Text="{Binding Password}"
                IsPassword="True"
                x:Name="passwordEntry"/>
-        <Button Text="Login"/>
+        <Button Text="Login" Command="{Binding SignInCommand}"/>
         <Button Text="Sign Up" Command="{Binding SignUpCommand}"/>
         </StackLayout>
 </ContentPage>

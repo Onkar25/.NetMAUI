@@ -1,3 +1,4 @@
+using Firebase.Auth;
 using PasswordManagement.Services;
 using PasswordManagement.ViewModels;
 
@@ -16,15 +17,15 @@ public partial class LoginPage : ContentPage
 		BindingContext = new LoginPageViewModel(databaseServices);
 	}
 
-	 public LoginPage(FirestoreService firestoreService)
+	 public LoginPage(FirestoreService firestoreService , FirebaseAuthClient firebaseAuthClient)
 	{
 		InitializeComponent();
-		BindingContext = new LoginPageViewModel(firestoreService);
+		BindingContext = new LoginPageViewModel(firestoreService , firebaseAuthClient);
 	}
 
     private void Button_Clicked(object sender, EventArgs e)
     {
-		Navigation.PushAsync(new SignUpPage());
+		// Navigation.PushAsync(new SignUpPage());
 		// Shell.Current.GoToAsync(nameof(SignUpPage));
     }
 }
