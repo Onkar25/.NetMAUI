@@ -18,7 +18,8 @@
                 Text="{Binding Password}"
                IsPassword="True"
                x:Name="passwordEntry"/>
-        <Button Text="Login" Command="{Binding SignInCommand}"/>
+        <Button Text="Login" Clicked="Button_Clicked" />
+        <!-- Command="{Binding SignInCommand}" -->
         <Button Text="Sign Up" Command="{Binding SignUpCommand}"/>
         </StackLayout>
 </ContentPage>

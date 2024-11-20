@@ -25,7 +25,39 @@ public partial class LoginPage : ContentPage
 
     private void Button_Clicked(object sender, EventArgs e)
     {
-		// Navigation.PushAsync(new SignUpPage());
-		// Shell.Current.GoToAsync(nameof(SignUpPage));
+		WebView _signInWebView = new WebView
+		{
+			Source = GoogleAuthService.ConstructGoogleSignInUrl(),
+			VerticalOptions = LayoutOptions.Fill,
+		};
+		Grid grid = new Grid();
+		grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Star }); // Row for the WebView
+		Grid.SetRow(_signInWebView, 0);
+		grid.Children.Add(_signInWebView);
+
+		ContentPage signInContentPage = new ContentPage
+		{
+			Content = grid,
+		};
+
+		try
+		{
+			Application.Current.MainPage.Navigation.PushModalAsync(signInContentPage);
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+		}
+		_signInWebView.Navigating += (sender, e) =>
+	   {
+
+		   string code = GoogleAuthService.OnWebViewNavigating(e, signInContentPage);
+		   if (!string.IsNullOrEmpty( e.Url ))//e.Url.StartsWith("http://localhost") && code != null)
+		   {
+			   (string access_token, string refresh_token) = GoogleAuthService.ExchangeCodeForAccessToken(code);
+		   }
+
+	   };
     }
+
 }
