@@ -2,24 +2,46 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PasswordManagement.Views.LoginPage"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="LoginPage">
-    <StackLayout 
-                 Spacing="20"
-                 Padding="20">
-        <Image Source="dotnet_bot"/>
-        <Label Text="Login"
-               FontSize="30"
-               HorizontalOptions="Center"
-               VerticalOptions="Center"/>
-        <Entry Placeholder="Username"
-              Text="{Binding Emailid}"
-               x:Name="usernameEntry"/>
-        <Entry Placeholder="Password"
-                Text="{Binding Password}"
-               IsPassword="True"
-               x:Name="passwordEntry"/>
-        <Button Text="Login" Clicked="Button_Clicked" />
-        <!-- Command="{Binding SignInCommand}" -->
-        <Button Text="Sign Up" Command="{Binding SignUpCommand}"/>
-        </StackLayout>
+       <ContentPage.Resources>
+              <Style x:Key="InvalidEntryStyle"
+                            TargetType="Entry">
+                     <Setter Property="TextColor"
+                                   Value="Red"/>
+              </Style>
+              <Style x:Key="ValidEntryStyle"
+                            TargetType="Entry">
+                     <Setter Property="TextColor"
+                                   Value="Green"/>
+              </Style>
+       </ContentPage.Resources>
+       <StackLayout
+              Spacing="20"
+              Padding="20">
+              <Image Source="dotnet_bot"/>
+              <Label Text="Login"
+                     FontSize="30"
+                     HorizontalOptions="Center"
+                     VerticalOptions="Center"/>
+              <Entry Placeholder="Username"
+                     Text="{Binding Emailid}"
+                     x:Name="usernameEntry">
+                     <Entry.Behaviors>
+                            <toolkit:EmailValidationBehavior
+                                   InvalidStyle="{StaticResource InvalidEntryStyle}"
+                                   ValidStyle="{StaticResource ValidEntryStyle}"
+                                   Flags="ValidateOnValueChanged"/>
+                     </Entry.Behaviors>
+              </Entry>
+              <Entry Placeholder="Password"
+                     Text="{Binding Password}"
+                     IsPassword="True"
+                     x:Name="passwordEntry"/>
+              <Button Text="Login"
+                      Command="{Binding SignInCommand}"/>
+              <!--  Clicked="Button_Clicked"  -->
+              <Button Text="Sign Up"
+                      Command="{Binding SignUpCommand}"/>
+       </StackLayout>
 </ContentPage>

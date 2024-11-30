@@ -10,4 +10,16 @@ public partial class SignUpPage : ContentPage
 		InitializeComponent();
 		BindingContext = new SignUpPageViewModel(firebaseAuthClient);
 	}
+
+	private void Button_Clicked(object sender, EventArgs e)
+	{
+		// if (PasswordValidation.IsNotValid)
+		// {
+		// 	// foreach (var error in PasswordValidation.Errors)
+		// 	// {
+		// 	// 	// ValidationMessage += "Email :" + error.ToString() + Environment.NewLine;
+		// 	// }
+		// 	// isValiad = false;
+		// }
+	}
 }

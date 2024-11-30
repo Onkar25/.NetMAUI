@@ -11,53 +11,62 @@ public partial class LoginPage : ContentPage
 		InitializeComponent();
 		BindingContext = new LoginPageViewModel(Navigation);
 	}
-	  public LoginPage(DatabaseServices databaseServices)
+	public LoginPage(DatabaseServices databaseServices)
 	{
 		InitializeComponent();
 		BindingContext = new LoginPageViewModel(databaseServices);
 	}
 
-	 public LoginPage(FirestoreService firestoreService , FirebaseAuthClient firebaseAuthClient)
+	public LoginPage(FirestoreService firestoreService, FirebaseAuthClient firebaseAuthClient)
 	{
 		InitializeComponent();
-		BindingContext = new LoginPageViewModel(firestoreService , firebaseAuthClient);
+		BindingContext = new LoginPageViewModel(firestoreService, firebaseAuthClient);
+		FirestoreService = firestoreService;
 	}
 
-    private void Button_Clicked(object sender, EventArgs e)
-    {
-		WebView _signInWebView = new WebView
-		{
-			Source = GoogleAuthService.ConstructGoogleSignInUrl(),
-			VerticalOptions = LayoutOptions.Fill,
-		};
-		Grid grid = new Grid();
-		grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Star }); // Row for the WebView
-		Grid.SetRow(_signInWebView, 0);
-		grid.Children.Add(_signInWebView);
+	public FirestoreService FirestoreService { get; }
 
-		ContentPage signInContentPage = new ContentPage
-		{
-			Content = grid,
-		};
+	private void Button_Clicked(object sender, EventArgs e)
+	{
+		#region Google Sign In
+		// 	WebView _signInWebView = new WebView
+		// 	{
+		// 		Source = GoogleAuthService.ConstructGoogleSignInUrl(),
+		// 		VerticalOptions = LayoutOptions.Fill,
+		// 	};
+		// 	Grid grid = new Grid();
+		// 	grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Star }); // Row for the WebView
+		// 	Grid.SetRow(_signInWebView, 0);
+		// 	grid.Children.Add(_signInWebView);
 
-		try
-		{
-			Application.Current.MainPage.Navigation.PushModalAsync(signInContentPage);
-		}
-		catch (Exception ex)
-		{
-			Console.WriteLine(ex.Message);
-		}
-		_signInWebView.Navigating += (sender, e) =>
-	   {
+		// 	ContentPage signInContentPage = new ContentPage
+		// 	{
+		// 		Content = grid,
+		// 	};
 
-		   string code = GoogleAuthService.OnWebViewNavigating(e, signInContentPage);
-		   if (!string.IsNullOrEmpty( e.Url ))//e.Url.StartsWith("http://localhost") && code != null)
-		   {
-			   (string access_token, string refresh_token) = GoogleAuthService.ExchangeCodeForAccessToken(code);
-		   }
+		// 	try
+		// 	{
+		// 		Application.Current.MainPage.Navigation.PushModalAsync(signInContentPage);
+		// 	}
+		// 	catch (Exception ex)
+		// 	{
+		// 		Console.WriteLine(ex.Message);
+		// 	}
+		// 	_signInWebView.Navigating += (sender, e) =>
+		//    {
 
-	   };
-    }
+		// 	   string code = GoogleAuthService.OnWebViewNavigating(e, signInContentPage);
+		// 	   if (!string.IsNullOrEmpty( e.Url ))//e.Url.StartsWith("http://localhost") && code != null)
+		// 	   {
+		// 		   (string access_token, string refresh_token) = GoogleAuthService.ExchangeCodeForAccessToken(code);
+		// 		    if (!string.IsNullOrWhiteSpace(refresh_token))
+		//             {
+		//                 App.Current.MainPage = new AppShell(FirestoreService);
+		//             }
+		// 	   }
+
+		//    };
+		#endregion
+	}
 
 }

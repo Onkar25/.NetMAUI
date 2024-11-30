@@ -14,6 +14,7 @@
 
     <ShellContent
         Title="Password"
+        
         ContentTemplate="{DataTemplate local:AddNewPassword}"
         Route="AddNewPassword"/>
 

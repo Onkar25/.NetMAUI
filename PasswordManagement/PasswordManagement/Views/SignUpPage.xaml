@@ -2,8 +2,21 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PasswordManagement.Views.SignUpPage"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="SignUp Page">
-     <Grid
+       <ContentPage.Resources>
+              <Style x:Key="InvalidEntryStyle"
+                     TargetType="Entry">
+                     <Setter Property="TextColor"
+                             Value="Red"/>
+              </Style>
+              <Style x:Key="ValidEntryStyle"
+                     TargetType="Entry">
+                     <Setter Property="TextColor"
+                             Value="Green"/>
+              </Style>
+       </ContentPage.Resources>
+       <Grid
               Padding="20"
               RowSpacing="10"
               ColumnSpacing="10"
@@ -17,7 +30,7 @@
                      FontSize="Title"
                      HorizontalTextAlignment="Center"
                      Text=" SignUp Page"/>
-                <Label Grid.Column="0"
+              <Label Grid.Column="0"
                      Grid.Row="1"
                      FontSize="Header"
                      Text="Username"/>
@@ -32,7 +45,14 @@
               <Entry Placeholder="Enter Email Id "
                      Text="{Binding Emailid}"
                      Grid.Row="2"
-                     Grid.Column="1"/>
+                     Grid.Column="1">
+                     <Entry.Behaviors>
+                            <toolkit:EmailValidationBehavior
+                                   InvalidStyle="{StaticResource InvalidEntryStyle}"
+                                   ValidStyle="{StaticResource ValidEntryStyle}"
+                                   Flags="ValidateOnValueChanged"/>
+                     </Entry.Behaviors>
+              </Entry>
               <Label Grid.Column="0"
                      FontSize="Header"
                      Grid.Row="3"
@@ -41,8 +61,22 @@
                      Text="{Binding Password}"
                      IsPassword="True"
                      Grid.Row="3"
-                     Grid.Column="1"/>
-                        <Button Text="Reset"
+                     Grid.Column="1">
+                     <Entry.Behaviors>
+                            <toolkit:MultiValidationBehavior   x:Name="PasswordValidation"
+                                                               InvalidStyle="{StaticResource InvalidEntryStyle}"
+                                                               ValidStyle="{StaticResource ValidEntryStyle}"
+                                                               Flags="ValidateOnAttaching,ValidateOnValueChanged">
+                                   <toolkit:TextValidationBehavior  MinimumLength="3"
+                                                                    toolkit:MultiValidationBehavior.Error="Please Enter Password"/>
+                                   <toolkit:TextValidationBehavior RegexPattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?])[A-Za-z\d@$!%*?]{8,}$"
+                                                                   toolkit:MultiValidationBehavior.Error="Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character:"/>
+                                   <!-- Regex for Password Validation 
+                                                 https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a -->
+                            </toolkit:MultiValidationBehavior>
+                     </Entry.Behaviors>
+              </Entry>
+              <Button Text="Reset"
                       Grid.Row="4"
                       FontSize="Medium"
                       Command="{Binding Reset}"
@@ -50,7 +84,8 @@
               <Button Text="Sign Up"
                       Command="{Binding AddPassword}"
                       Grid.Row="4"
+                      Clicked="Button_Clicked"
                       FontSize="Medium"
                       Grid.Column="1"/>
-              </Grid>
+       </Grid>
 </ContentPage>
