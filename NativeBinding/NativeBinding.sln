@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 25.0.1706.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeBinding", "NativeBinding\NativeBinding.csproj", "{251075AE-7B2E-4957-AF9B-5FE85DFDE58D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeLibraryBinding", "NativeLibraryBinding\NativeLibraryBinding.csproj", "{7A700B75-B498-4A7C-91FD-C350EA67A04A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{251075AE-7B2E-4957-AF9B-5FE85DFDE58D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{251075AE-7B2E-4957-AF9B-5FE85DFDE58D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{251075AE-7B2E-4957-AF9B-5FE85DFDE58D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{251075AE-7B2E-4957-AF9B-5FE85DFDE58D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A700B75-B498-4A7C-91FD-C350EA67A04A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A700B75-B498-4A7C-91FD-C350EA67A04A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A700B75-B498-4A7C-91FD-C350EA67A04A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A700B75-B498-4A7C-91FD-C350EA67A04A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {739B2321-0E04-45B0-A75A-3FAB5E67F22E}
+	EndGlobalSection
+EndGlobal
